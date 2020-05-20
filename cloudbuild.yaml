@@ -1,0 +1,16 @@
+steps:
+# Substitute project ID placeholder in dashboard file with project ID supplied by Cloud Build
+- name: 'google/cloud-sdk'
+  id : 'Substitute project ID'
+  entrypoint: 'bash'
+  args:
+    - '-c' # pass what follows as a command to bash
+    - |
+      sed -i 's/\[PROJECT_ID\]/'$PROJECT_ID'/g' dashboard.json
+- name: 'google/cloud-sdk'
+  id: 'Create dashboard'
+  args:
+    [
+      'gcloud', 'monitoring', 'dashboards', 'create',
+      '--config-from-file=dashboard.json'
+    ]
