@@ -8,9 +8,17 @@ steps:
     - |
       sed -i 's/\[PROJECT_ID\]/'$PROJECT_ID'/g' dashboard.json
 - name: 'google/cloud-sdk'
-  id: 'Create dashboard'
+  id: 'Delete dashboard' 
   args:
     [
-      'gcloud', 'monitoring', 'dashboards', 'create',
+      'gcloud', 'monitoring', 'dashboards', 'delete', 
+      '--quiet',
+      'projects/$PROJECT_ID/dashboards/${_DASHBOARD_ID}'
+    ]
+- name: 'google/cloud-sdk' 
+  id: 'Create dashboard'
+  args:  
+    [
+      'gcloud', 'monitoring', 'dashboards', 'create', 
       '--config-from-file=dashboard.json'
     ]
